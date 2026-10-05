@@ -96,16 +96,108 @@
       </ul>
     </section>
 	
-    <section id="some-slide" class="slide" inlist="" rel="schema:hasPart" resource="#some-slide">
-      <h2 property="schema:name">TODO: A regular slide</h2>
-      <ul>
-          <li>
-          	  <h3>A</h3>
-			  <span class="indent">TODO: Description</span>
-          </li>
-          <li>B</li>
-          <li>C</li>
-      </ul>
+    <section id="query-centralized" class="slide" inlist="" rel="schema:hasPart" resource="#query-centralized">
+        <h2 property="schema:name">SPARQL processing over centralized data</h2>
+        <img src="img/sparql-centralized.svg" width="35%" style="float: right" />
+		<ul>
+			<li>
+				<h3>Dataset is collocated with query engine</h3>
+				<span class="indent">All data is known beforehand</span>
+			</li>
+			<li>
+				<h3>Single dataset</h3>
+				<span class="indent">With precomputed indexes</span>
+			</li>
+			<li>
+				<h3>Execute queries of any complexity</h3>
+                <pre style="background: white; font-size: 0.65em" class="indent">SELECT ?name ?deathDate WHERE {
+  ?person a dbpedia-owl:Artist;
+          rdfs:label ?name;
+          dbpedia-owl:birthPlace [ rdfs:label "York"@en ].
+  FILTER LANGMATCHES(LANG(?name),  "EN")
+  OPTIONAL { ?person dbpprop:dateOfDeath ?deathDate. }
+}
+                </pre>
+			</li>
+		</ul>
+    </section>
+    
+    <section id="query-centralized-problems" class="slide" inlist="" rel="schema:hasPart" resource="#query-centralized-problems">
+        <h2 property="schema:name">Centralization not always possible</h2>
+        <img src="img/solid-pods.svg" width="35%" style="float: right" />
+		<ul>
+			<li>
+				<h3>Private data</h3>
+				<span class="indent">Technical and legal reasons</span>
+			</li>
+			<li>
+				<h3>Evolving data</h3>
+				<span class="indent">Requires continuous re-indexing</span>
+			</li>
+			<li>
+				<h3>Web scale data</h3>
+				<span class="indent">Indexing the whole Web is infeasible (for non-tech-giants)</span>
+			</li>
+		</ul>
+    </section>
+    
+    <section id="query-decentralized" class="slide" inlist="" rel="schema:hasPart" resource="#sparql-decentralized">
+        <h2 property="schema:name">How to query over <em>decentralized</em> data?</h2>
+        <center><img src="img/sparql-decentralized.svg" width="75%" /></center>
+		<ul>
+			<li>
+				<h3>Data and query engine are <em>not</em> collocated</h3>
+				<span class="indent">Query engine runs on a separate machine</span>
+			</li>
+			<li>
+				<h3>Not just one datasets</h3>
+				<span class="indent">Data is spread over the Web into multiple data sources</span>
+			</li>
+		</ul>
+    </section>
+    
+    <section id="query-decentralized-overview" class="slide" inlist="" rel="schema:hasPart" resource="#sparql-decentralized-overview">
+        <h2 property="schema:name">Approaches for querying over decentralized data</h2>
+		<ul>
+			<li>
+				<h3>Federated Query Processing</h3>
+				<span class="indent">Distributing query execution across <em>known</em> sources</span>
+			</li>
+			<li>
+				<h3>Link Traversal Query Processing</h3>
+				<span class="indent">Local query execution over sources that are <em>discovered</em> by following links</span>
+			</li>
+		</ul>
+    </section>
+
+    <section id="federated-overview" class="slide" inlist="" rel="schema:hasPart" resource="#federated-overview">
+        <h2 property="schema:name">Federated querying: Distribute query over query APIs</h2>
+        <center><img src="img/sparql-federated.svg" width="75%" /></center>
+		<ul>
+			<li>
+				<h3>Clients do limited effort</h3>
+				<span class="indent">Split up the query, distribute it (source assignment), and combine results</span>
+			</li>
+			<li>
+				<h3>Servers perform most of the effort</h3>
+				<span class="indent">They actually execute the queries, over potentially huge datasets</span>
+			</li>
+		</ul>
+    </section>
+
+    <section id="linktraversal-overview" class="slide" inlist="" rel="schema:hasPart" resource="#linktraversal-overview">
+        <h2 property="schema:name">Link Traversal: Exploit interlinking of documents</h2>
+        <center><img src="img/sparql-decentralized-links.svg" width="75%" /></center>
+		<ul>
+			<li>
+				<h3>Linked Data documents are linked to each other</h3>
+				<span class="indent">Following the Linked Data principles</span>
+			</li>
+			<li>
+				<h3>Query engine can <em>follow</em> links</h3>
+				<span class="indent">Start from one document, and discover new documents on the fly</span>
+			</li>
+		</ul>
     </section>
 
     <section id="index-comunica" class="slide index" inlist="" rel="schema:hasPart" resource="#index-comunica">
@@ -113,6 +205,210 @@
         <li><a href="#index-querying">Querying over decentralized data</a></li>
         <li class="current"><a href="#index-comunica">Comunica</a></li>
 		<li><a href="#index-research">Ongoing research</a></li>
+      </ul>
+    </section>
+
+    <section id="comunica" class="slide center" style="background-color: #be1622; color: white" inlist="" rel="schema:hasPart" resource="#comunica">
+      <img src="img/comunica_white_on_red.svg" width="250px" />
+      <ul style="font-size: 1.5em">
+          <li>Highly modular <em>meta</em> query engine</li>
+          <li>Integrates decentralized Knowledge Graphs</li>
+          <li><a href="https://comunica.dev/" style="color:white">https://comunica.dev/</a></li>
+      </ul>
+    </section>
+
+    <section id="query-abstraction" class="slide" inlist="" rel="schema:hasPart" resource="#query-abstraction">
+      <h2 property="schema:name">Queries as abstraction layer for integration</h2>
+      <em>SPARQL, GraphQL, ...</em><br \><br \>
+      <ul>
+          <li>
+          	  <h3>Say <em>what</em> needs to happen, not <em>how</em></h3>
+			  <span class="indent">Declarative queries hide complexities of data retrieval</span>
+          </li>
+          <li>
+          	  <h3>Queries are reusable</h3>
+			  <span class="indent">Queries are not API-specific</span>
+          </li>
+          <li>
+          	  <h3>Execution via a generic, reusable <em>query engine</em></h3>
+			  <span class="indent">Abstracts away complexities for executing queries</span><br \>
+              <span class="indent">New optimisations can be used by merely updating query engine</span>
+          </li>
+      </ul>
+    </section>
+    
+    <section id="heterogeneous" class="slide" inlist="" rel="schema:hasPart" resource="#heterogeneous">
+      <h2 property="schema:name">Heterogeneity and Federation</h2>
+      <ul>
+          <li>
+          	  <h3>Understanding any source</h3>
+			  <span class="indent">Give it any URL, and Comunica will aim to query it as efficient as possible</span><br \>
+              <span class="indent"><em>Linked Data documents, Triple Pattern Fragments, SPARQL endpoints, ...</em></span>
+          </li>
+          <li>
+          	  <h3>Combining multiple sources through federated querying</h3>
+			  <span class="indent">Data can be spread over multiple sources</span>
+          </li>
+          <li>
+          	  <h3>Source discovery through link traversal (experimental)</h3>
+			  <span class="indent">All relevant sources may not always be known beforehand</span><br \>
+              <span class="indent">For fully decentralised data <em>(Solid)</em></span>
+          </li>
+      </ul>
+    </section>
+    
+    <section id="modularity" class="slide" inlist="" rel="schema:hasPart" resource="#modularity">
+      <h2 property="schema:name">Flexible and Modular Meta-Query Engine</h2>
+      <ul>
+          <li>
+          	  <h3>Collection of building blocks</h3>
+			  <span class="indent">330+ independent modules implement specific functionality</span>
+          </li>
+          <li>
+          	  <h3>Combining building blocks</h3>
+			  <span class="indent">Building custom query engines with specific functionality and settings</span><br \>
+              <span class="indent">Using a flexible configuration system</span><br \>
+              <span class="indent">Presets: <em>Comunica SPARQL, Comunica Solid, ...</em></span>
+          </li>
+          <center><img src="img/actor-mediator-bus.svg" alt="Actor Mediator Bus" height="150px" \></center>
+      </ul>
+    </section>
+    
+    <section id="open" class="slide" inlist="" rel="schema:hasPart" resource="#open">
+      <h2 property="schema:name">Comunica is Open</h2>
+      <ul>
+          <li>
+          	  <h3>Open standards</h3>
+			  <span class="indent">Implements Web standards (SPARQL 1.2, RDF 1.2, ...)</span><br \>
+              <span class="indent">Implemented using Web standards (TypeScript/JavaScript)</span><br \>
+              <span class="indent">Interoperable with other TS/JS libraries using <a href="https://rdf.js.org/">the RDF/JS interfaces</a></span>
+          </li>
+          <li>
+          	  <h3>Open source</h3>
+			  <span class="indent">MIT-licensed: <a href="https://github.com/comunica/comunica">https://github.com/comunica/comunica</a></span>
+          </li>
+          <li>
+          	  <h3>Open governance</h3>
+			  <span class="indent"><a href="https://comunica.dev/association/">Comunica Association</a> connects organisations</span><br \>
+          </li>
+      </ul>
+    </section>
+
+    <section id="impl-details" class="slide" inlist="" rel="schema:hasPart" resource="#impl-details">
+      <h2 property="schema:name">Comunica is production-ready</h2>
+      <ul>
+          <li>
+          	  <h3>Extensively tested (continuous integration)</h3>
+			  <span class="indent">7.286 unit tests with coverage of 100%</span><br \>
+              <span class="indent">30 large engine-wide integration tests</span><br \>
+              <span class="indent">Fully spec-compliant: 1.283 SPARQL (1.0,1.1,1.2) W3C specification tests</span>
+          </li>
+          <li>
+          	  <h3>High performance</h3>
+			  <span class="indent">Comparable to in-memory <em>centralized</em> engines (up to ~35M triples)</span><br \>
+              <span class="indent">Continuous performance measurements in CI</span>
+          </li>
+          <li>
+          	  <h3>Widely used</h3>
+			  <span class="indent">400.000+ monthly npm downloads</span><br \>
+              <span class="indent">1.600+ dependents on GitHub</span>
+          </li>
+      </ul>
+    </section>
+
+    <section id="default-engines" class="slide" inlist="" rel="schema:hasPart" resource="#default-engines">
+      <h2 property="schema:name">Default Comunica engines</h2>
+      <ul>
+          <li>
+          	  <h3>Comunica SPARQL</h3>
+              <span class="indent">Query over one or more SPARQL endpoints, TPF interfaces, RDF files, &mldr;</span>
+          </li>
+          <li>
+          	  <h3>Comunica SPARQL RDF/JS Lite</h3>
+          	  <span class="indent">Limited build for querying within browser environments</span>
+          </li>
+          <li>
+          	  <h3>Comunica SPARQL Link Traversal</h3>
+          	  <span class="indent">Link traversal over Linked Data documents and Solid pods</span>
+          </li>
+          <li>
+          	  <h3>Comunica SPARQL HDT</h3>
+          	  <span class="indent">Query over HDT files</span>
+          </li>
+          <li>
+          	  <h3>Comunica MCP</h3>
+          	  <span class="indent">MCP wrappers over most Comunica engines for interaction with AI agents</span>
+          </li>
+      </ul>
+    </section>
+
+    <section id="start-browser" class="slide" inlist="" rel="schema:hasPart" resource="#start-browser">
+      <h2 property="schema:name">Query in the browser</h2>
+      <ul>
+          <li>
+          	  <h3><a href="https://query.comunica.dev/">https://query.comunica.dev/</a></h3>
+			  <span class="indent">Client-side querying of sources using SPARQL or GraphQL</span>
+          </li>
+          <iframe src="https://query.comunica.dev/"></iframe>
+      </ul>
+    </section>
+    
+    <section id="start-cli" class="slide" inlist="" rel="schema:hasPart" resource="#start-cli">
+      <h2 property="schema:name">Query on the command line</h2>
+      <ul>
+          <li>
+          	  <h3>Installing Comunica SPARQL globally</h3>
+              <pre class="indent">$ npm install -g @comunica/query-sparql</pre>
+          </li>
+          <li>
+          	  <h3>Running a SELECT query</h3>
+			  <pre class="indent">$ comunica-sparql https://fragments.dbpedia.org/2016-04/en \
+    "SELECT * WHERE { ?s ?p ?o } LIMIT 100"</pre>
+          </li>
+          <li>
+          	  <h3>Running a CONSTRUCT query</h3>
+          	  <pre class="indent">$ comunica-sparql https://fragments.dbpedia.org/2016-04/en \
+    "CONSTRUCT WHERE { ?s ?p ?o } LIMIT 100"</pre>
+          </li>
+      </ul>
+      <span>Learn more: <a href="https://comunica.dev/docs/query/getting_started/query_cli/">https://comunica.dev/docs/query/getting_started/query_cli/</a></span>
+    </section>
+    
+    <section id="start-app" class="slide" inlist="" rel="schema:hasPart" resource="#start-app">
+      <h2 property="schema:name">Query in an JavaScript/TypeScript app</h2>
+      <ul>
+          <li>
+          	  <h3>Installing Comunica SPARQL locally</h3>
+              <pre class="indent">$ npm install @comunica/query-sparql</pre>
+          </li>
+          <li>
+          	  <h3>Creating a new engine</h3>
+			  <pre class="indent">const myEngine = new QueryEngine();</pre>
+          </li>
+          <li>
+          	  <h3>Running a SELECT query</h3>
+          	  <pre class="indent">myEngine.queryBindings(`SELECT...`, { sources: [ 'https...' ]});</pre>
+          </li>
+      </ul>
+      <br \>
+      <span>Learn more: <a href="https://comunica.dev/docs/query/getting_started/query_app/">https://comunica.dev/docs/query/getting_started/query_app/</a></span>
+    </section>
+    
+    <section id="start-more" class="slide" inlist="" rel="schema:hasPart" resource="#start-more">
+      <h2 property="schema:name">More on <a href="https://comunica.dev/docs/">https://comunica.dev/docs/</a></h2>
+      <ul>
+          <li>
+          	  <h3>Getting started guides</h3>
+              <span class="indent">Tutorials on how to use Comunica in different ways</span>
+          </li>
+          <li>
+          	  <h3>Modification guides</h3>
+			  <span class="indent">Tutorials on how to modify and configure custom query engines</span>
+          </li>
+          <li>
+          	  <h3>Internal details</h3>
+          	  <span class="indent">In-depth documentation on the internals and architecture</span>
+          </li>
       </ul>
     </section>
 
