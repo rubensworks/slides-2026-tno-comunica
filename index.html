@@ -96,16 +96,108 @@
       </ul>
     </section>
 	
-    <section id="some-slide" class="slide" inlist="" rel="schema:hasPart" resource="#some-slide">
-      <h2 property="schema:name">TODO: A regular slide</h2>
-      <ul>
-          <li>
-          	  <h3>A</h3>
-			  <span class="indent">TODO: Description</span>
-          </li>
-          <li>B</li>
-          <li>C</li>
-      </ul>
+    <section id="query-centralized" class="slide" inlist="" rel="schema:hasPart" resource="#query-centralized">
+        <h2 property="schema:name">SPARQL processing over centralized data</h2>
+        <img src="img/sparql-centralized.svg" width="35%" style="float: right" />
+		<ul>
+			<li>
+				<h3>Dataset is collocated with query engine</h3>
+				<span class="indent">All data is known beforehand</span>
+			</li>
+			<li>
+				<h3>Single dataset</h3>
+				<span class="indent">With precomputed indexes</span>
+			</li>
+			<li>
+				<h3>Execute queries of any complexity</h3>
+                <pre style="background: white; font-size: 0.65em" class="indent">SELECT ?name ?deathDate WHERE {
+  ?person a dbpedia-owl:Artist;
+          rdfs:label ?name;
+          dbpedia-owl:birthPlace [ rdfs:label "York"@en ].
+  FILTER LANGMATCHES(LANG(?name),  "EN")
+  OPTIONAL { ?person dbpprop:dateOfDeath ?deathDate. }
+}
+                </pre>
+			</li>
+		</ul>
+    </section>
+    
+    <section id="query-centralized-problems" class="slide" inlist="" rel="schema:hasPart" resource="#query-centralized-problems">
+        <h2 property="schema:name">Centralization not always possible</h2>
+        <img src="img/solid-pods.svg" width="35%" style="float: right" />
+		<ul>
+			<li>
+				<h3>Private data</h3>
+				<span class="indent">Technical and legal reasons</span>
+			</li>
+			<li>
+				<h3>Evolving data</h3>
+				<span class="indent">Requires continuous re-indexing</span>
+			</li>
+			<li>
+				<h3>Web scale data</h3>
+				<span class="indent">Indexing the whole Web is infeasible (for non-tech-giants)</span>
+			</li>
+		</ul>
+    </section>
+    
+    <section id="query-decentralized" class="slide" inlist="" rel="schema:hasPart" resource="#sparql-decentralized">
+        <h2 property="schema:name">How to query over <em>decentralized</em> data?</h2>
+        <center><img src="img/sparql-decentralized.svg" width="75%" /></center>
+		<ul>
+			<li>
+				<h3>Data and query engine are <em>not</em> collocated</h3>
+				<span class="indent">Query engine runs on a separate machine</span>
+			</li>
+			<li>
+				<h3>Not just one datasets</h3>
+				<span class="indent">Data is spread over the Web into multiple data sources</span>
+			</li>
+		</ul>
+    </section>
+    
+    <section id="query-decentralized-overview" class="slide" inlist="" rel="schema:hasPart" resource="#sparql-decentralized-overview">
+        <h2 property="schema:name">Approaches for querying over decentralized data</h2>
+		<ul>
+			<li>
+				<h3>Federated Query Processing</h3>
+				<span class="indent">Distributing query execution across <em>known</em> sources</span>
+			</li>
+			<li>
+				<h3>Link Traversal Query Processing</h3>
+				<span class="indent">Local query execution over sources that are <em>discovered</em> by following links</span>
+			</li>
+		</ul>
+    </section>
+
+    <section id="federated-overview" class="slide" inlist="" rel="schema:hasPart" resource="#federated-overview">
+        <h2 property="schema:name">Federated querying: Distribute query over query APIs</h2>
+        <center><img src="img/sparql-federated.svg" width="75%" /></center>
+		<ul>
+			<li>
+				<h3>Clients do limited effort</h3>
+				<span class="indent">Split up the query, distribute it (source assignment), and combine results</span>
+			</li>
+			<li>
+				<h3>Servers perform most of the effort</h3>
+				<span class="indent">They actually execute the queries, over potentially huge datasets</span>
+			</li>
+		</ul>
+    </section>
+
+    <section id="linktraversal-overview" class="slide" inlist="" rel="schema:hasPart" resource="#linktraversal-overview">
+        <h2 property="schema:name">Link Traversal: Exploit interlinking of documents</h2>
+        <center><img src="img/sparql-decentralized-links.svg" width="75%" /></center>
+		<ul>
+			<li>
+				<h3>Linked Data documents are linked to each other</h3>
+				<span class="indent">Following the Linked Data principles</span>
+			</li>
+			<li>
+				<h3>Query engine can <em>follow</em> links</h3>
+				<span class="indent">Start from one document, and discover new documents on the fly</span>
+			</li>
+		</ul>
     </section>
 
     <section id="index-comunica" class="slide index" inlist="" rel="schema:hasPart" resource="#index-comunica">
